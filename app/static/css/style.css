@@ -1,3 +1,50 @@
+.not-active {
+  cursor: default;
+}
+
+#complaint-title {
+  display: block;
+  border:0;
+  width: 100%;
+  font-size:140%;
+  border-radius:3px;
+  background:#FFC;
+  overflow:hidden;
+  font-smoothing:subpixel-antialiased;
+}
+
+#complaint-text  { 
+  display: block;
+  resize: none;
+  padding:0;
+  margin:5px 0 0 0;
+  border:0;
+  height: 10em;
+  width: 100%;
+  font-family:"Coming Soon",arial,sans-serif;
+  border-radius:3px;
+  background:#FFC;
+  overflow:hidden;
+  font-smoothing:subpixel-antialiased;
+}
+
+#complaint-submit {
+  padding:5px 15px; 
+  background:#ccc; 
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#complaint-text:focus, #complaint-title:focus { 
+  outline:none; 
+}
+
+.sticky-top {
+  display: inline-block;
+}
+
 #sticky ul{
   overflow:hidden;
   padding:3em;
@@ -7,6 +54,8 @@
   list-style:none;
   margin-bottom: 1em;
 }
+
+
 
 #sticky ul li a{
   text-decoration:none;
@@ -32,6 +81,7 @@
 }
 
 #sticky ul li h2{
+  margin-top: 0;
   font-size:140%;
 }
 
@@ -61,7 +111,7 @@
   top:-10px;
 }
 
-#sticky ul li a:hover,ul li a:focus{
+#sticky ul li a:hover,#sticky ul li a:focus{
   -moz-box-shadow:10px 10px 7px rgba(0,0,0,.3);
   -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.1);
   box-shadow:10px 10px 7px rgba(0,0,0,.1);
