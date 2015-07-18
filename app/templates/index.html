@@ -31,8 +31,8 @@
 				<form action="" method="post" name="complain">
 					{{ form.hidden_tag() }}
 					<a class="not-active">
-						{{ form.title(id="complaint-title", placeholder="What is so sad?", autocomplete="off") }}
-						{{ form.text(id="complaint-text", placeholder="Write your complaint here") }}
+						{{ form.title(id="complaint-title", placeholder="What is so sad?", autocomplete="off", required=True) }}
+						{{ form.text(id="complaint-text", placeholder="Write your complaint here", required=True) }}
 						<input id="complaint-submit" class="btn-success" type="submit" value="Complain">
 					</a>
 				</form>

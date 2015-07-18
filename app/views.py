@@ -29,8 +29,8 @@ def index():
                            complaints=complaints,
                            form=form)
 
-@login_required
 @app.route('/profile')
+@login_required
 def profile():
 	complaints = current_user.complaints.order_by('id desc').limit(20).all()
 	return render_template('index.html',
@@ -94,8 +94,8 @@ def signup():
                            title='Sign Up',
                            form=form)
 
-@login_required
 @app.route('/signout')
+@login_required
 def signout():
 	logout_user()
 	return redirect(url_for('index'))

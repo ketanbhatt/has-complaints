@@ -1,19 +1,15 @@
 {% extends "base.html" %}
-{% block head %}
-    <link href="{{url_for('static', filename='css/signinup.css')}}" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
     <div class="container">
 
       <form action="" method="post" class="form-signin" role="form">
         {{ form.hidden_tag() }}
         <h2 class="form-signin-heading">Sign Up</h2>
-        {{ form.name(class_="form-control", placeholder="Full Name", autofocus=True) }}
-        {{ form.email(type="email", class_="form-control", placeholder="Email address") }}
-        {{ form.empId(class_="form-control", placeholder="Employee ID") }}
-        {{ form.password(class_="form-control", placeholder="Password") }}
-        {{ form.retypePassword(id="last-input", class_="form-control", placeholder="Retype Password") }}
+        {{ form.name(class_="form-control", placeholder="Full Name", autofocus=True, required=True) }}
+        {{ form.email(type="email", class_="form-control", placeholder="Email address", required=True) }}
+        {{ form.empId(class_="form-control", placeholder="Employee ID", required=True) }}
+        {{ form.password(class_="form-control", placeholder="Password", required=True) }}
+        {{ form.retypePassword(id="last-input", class_="form-control", placeholder="Retype Password", required=True) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
       </form>
 

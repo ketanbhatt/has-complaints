@@ -7,9 +7,6 @@
     <!-- Bootstrap core CSS -->
     <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Coming+Soon' rel='stylesheet' type='text/css'>
-    <!-- Custom styles for this template -->
-    <link href="{{url_for('static', filename='css/navbar.css')}}" rel="stylesheet">
-    {% block head %}{% endblock %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
   </head>
 
@@ -19,7 +16,11 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+              {% if category == None %}
+                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+              {% else %}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+              {% endif %}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 {{ message }}
               </div>
