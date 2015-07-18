@@ -4,14 +4,17 @@
 
 <ul>
 	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-		<a class="not-active">
-			<p class="sticky-top pull-left"><sup>Current user</sup></p>
-			<p class="sticky-top pull-right"><sup>Current date</sup></p>
-			<div class="clearfix"></div>
-			<input id="complaint-title" name="complaint-title" type="text" placeholder="What is so sad?">
-			<textarea id="complaint-text" name="complaint-text" placeholder="blabla"></textarea>
-			<input id="complaint-submit" type="submit" value="Complain">
-		</a>
+		<form action="" method="post" name="complain">
+			{{ form.hidden_tag() }}
+			<a class="not-active">
+				<p class="sticky-top pull-left"><sup>Current user</sup></p>
+				<p class="sticky-top pull-right"><sup>Current date</sup></p>
+				<div class="clearfix"></div>
+				{{ form.title(id="complaint-title", placeholder="What is so sad?") }}
+				{{ form.text(id="complaint-text", placeholder="Write your complaint here") }}
+				<input id="complaint-submit" class="btn-success" type="submit" value="Complain">
+			</a>
+		</form>
 	</li>
 	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 		<a href="#">

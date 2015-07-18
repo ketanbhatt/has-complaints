@@ -19,7 +19,7 @@
   padding:0;
   margin:5px 0 0 0;
   border:0;
-  height: 10em;
+  height: 9em;
   width: 100%;
   font-family:"Coming Soon",arial,sans-serif;
   border-radius:3px;
@@ -29,15 +29,11 @@
 }
 
 #complaint-submit {
-  padding:5px 15px; 
-  background:#ccc; 
+  margin-bottom: 4px;
   border:0 none;
-  cursor:pointer;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
 }
 
-#complaint-text:focus, #complaint-title:focus { 
+#complaint-text:focus, #complaint-title:focus, #complaint-submit:focus { 
   outline:none; 
 }
 
@@ -52,7 +48,7 @@
 
 #sticky ul li{
   list-style:none;
-  margin-bottom: 1em;
+  margin-bottom: 3em;
 }
 
 
