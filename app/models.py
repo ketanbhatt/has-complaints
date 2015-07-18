@@ -1,6 +1,8 @@
 from app import db, bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from datetime import datetime
+
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64), index=True)
@@ -42,7 +44,7 @@ class Complaint(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	title = db.Column(db.String(64))
 	text = db.Column(db.String(400))
-	timestamp = db.Column(db.DateTime)
+	timestamp = db.Column(db.DateTime, default=datetime.now())
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 	def __repr__(self):

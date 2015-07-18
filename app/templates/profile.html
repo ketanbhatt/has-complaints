@@ -3,18 +3,6 @@
 <div class="container" id="sticky">
 
 <ul>
-	{% if current_user.is_authenticated() %}
-	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-		<form action="" method="post" name="complain">
-			{{ form.hidden_tag() }}
-			<a class="not-active">
-				{{ form.title(id="complaint-title", placeholder="What is so sad?", autocomplete="off") }}
-				{{ form.text(id="complaint-text", placeholder="Write your complaint here") }}
-				<input id="complaint-submit" class="btn-success" type="submit" value="Complain">
-			</a>
-		</form>
-	</li>
-	{% endif %}
 	{% for complaint in complaints %}
 	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 		<a href="#">

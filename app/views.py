@@ -13,12 +13,24 @@ def load_user(id):
 def index():
 	form = ComplaintForm()
 	if form.validate_on_submit():
+		complaint = Complaint(title=form.title.data, text=form.text.data, complainant=current_user)
+		db.session.add(complaint)
+		db.session.commit()
 		flash('You complained about %s' % (form.title.data))
-		return redirect('/')
+		return redirect(url_for('index'))
+
+	complaints = Complaint.query.order_by('timestamp desc').limit(20).all()
 	return render_template('index.html',
                            title='Home',
+                           complaints=complaints,
                            form=form)
 
+@app.route('/profile')
+def profile():
+	complaints = current_user.complaints.order_by('timestamp desc').limit(20).all()
+	return render_template('profile.html',
+                           title=current_user.name,
+                           complaints=complaints)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
