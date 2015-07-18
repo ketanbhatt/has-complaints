@@ -1,6 +1,13 @@
-from flask import render_template, flash, redirect
-from app import app
+from flask import render_template, flash, redirect, session, url_for, request
+from flask.ext.login import login_user, logout_user, current_user, login_required
+
+from app import app, db, lm, bcrypt
 from .forms import *
+from .models import *
+
+@lm.user_loader
+def load_user(id):
+	return User.query.get(int(id))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -15,10 +22,18 @@ def index():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+	if current_user.is_authenticated():
+		return redirect(url_for('index'))
+
 	form = SigninForm()
 	if form.validate_on_submit():
-		flash('User %s signed in' % (form.email.data))
-		return redirect('/')
+		user = User.query.filter_by(email = form.email.data).first_or_404()
+		if user.is_correct_password(form.password.data):
+			login_user(user)
+			return redirect(url_for('index'))
+		else:
+			return redirect(url_for('signin'))
+
 	return render_template('signin.html',
                            title='Sign In',
                            form=form)
@@ -27,8 +42,19 @@ def signin():
 def signup():
 	form = SignupForm()
 	if form.validate_on_submit():
-		flash('You complained about %s' % (form.name.data))
-		return redirect('/')
+		if form.password.data == form.retypePassword.data:
+			user = User(name=form.name.data, email=form.email.data, empId=form.empId.data, password=form.password.data)
+			db.session.add(user)
+			db.session.commit()
+			login_user(user)
+			return redirect(url_for('index'))
+
 	return render_template('signup.html',
                            title='Sign Up',
                            form=form)
+
+@login_required
+@app.route('/signout')
+def signout():
+	logout_user()
+	return redirect(url_for('index'))

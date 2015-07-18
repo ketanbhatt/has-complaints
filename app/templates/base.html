@@ -58,9 +58,13 @@
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="./">Default</a></li>
-              <li><a href="../navbar-static-top/">Static top</a></li>
-              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+              {% if current_user.is_authenticated() %}
+                <li><a href="#">{{ current_user.name }}</a></li>
+                <li><a href="{{url_for('signout')}}">Sign Out</a></li>
+              {% else %}
+                <li><a href="{{url_for('signin')}}">Login</a></li>
+                <li><a href="{{url_for('signup')}}">Sign Up</a></li>
+              {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

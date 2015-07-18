@@ -3,12 +3,13 @@
 <div class="container" id="sticky">
 
 <ul>
+	{% if current_user.is_authenticated() %}
 	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 		<form action="" method="post" name="complain">
 			{{ form.hidden_tag() }}
 			<a class="not-active">
-				<p class="sticky-top pull-left"><sup>Current user</sup></p>
-				<p class="sticky-top pull-right"><sup>Current date</sup></p>
+				<p class="sticky-top pull-left"><sup>{{ current_user.name }}</sup></p>
+				<p class="sticky-top pull-right"><sup>{{ current_time }}</sup></p>
 				<div class="clearfix"></div>
 				{{ form.title(id="complaint-title", placeholder="What is so sad?") }}
 				{{ form.text(id="complaint-text", placeholder="Write your complaint here") }}
@@ -16,6 +17,7 @@
 			</a>
 		</form>
 	</li>
+	{% endif %}
 	<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 		<a href="#">
 			<p class="sticky-top pull-left"><sup>Ketan Bhatt</sup></p>

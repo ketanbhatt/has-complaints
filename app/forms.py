@@ -14,6 +14,6 @@ class SigninForm(Form):
 class SignupForm(Form):
 	name = TextField('Username', validators=[DataRequired()]) 
 	email = StringField('Email', validators=[DataRequired()])
-	userId = StringField('User ID', validators=[DataRequired()])
+	empId = StringField('Employee ID', validators=[DataRequired()])
 	password = PasswordField('Password', validators=[DataRequired()])
 	retypePassword = PasswordField('Retype Password', validators=[DataRequired()])
