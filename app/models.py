@@ -1,6 +1,7 @@
-from app import db, bcrypt
+from app import app, db, bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 
+import flask.ext.whooshalchemy as whooshalchemy
 from datetime import datetime
 
 class User(db.Model):
@@ -41,6 +42,8 @@ class User(db.Model):
 		return '<User %r>' % (self.name)
 
 class Complaint(db.Model):
+	__searchable__ = ['text']
+
 	id = db.Column(db.Integer, primary_key = True)
 	title = db.Column(db.String(64))
 	text = db.Column(db.String(400))
@@ -49,3 +52,5 @@ class Complaint(db.Model):
 
 	def __repr__(self):
 		return "<Complaint %r>" % (self.title)
+
+whooshalchemy.whoosh_index(app, Complaint)

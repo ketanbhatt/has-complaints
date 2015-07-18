@@ -17,3 +17,6 @@ class SignupForm(Form):
 	empId = StringField('Employee ID', validators=[DataRequired()])
 	password = PasswordField('Password', validators=[DataRequired()])
 	retypePassword = PasswordField('Retype Password', validators=[DataRequired()])
+
+class SearchForm(Form):
+	search = TextField('search', validators=[DataRequired()])
