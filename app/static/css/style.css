@@ -7,11 +7,7 @@ body {
   margin-bottom: 20px;
 }
 
-.not-active {
-  cursor: default;
-}
-
-#complaint-title {
+#complaint-form-title {
   display: block;
   border:0;
   width: 100%;
@@ -22,7 +18,7 @@ body {
   font-smoothing:subpixel-antialiased;
 }
 
-#complaint-text  { 
+#complaint-form-text  { 
   display: block;
   resize: none;
   padding:0;
@@ -38,16 +34,22 @@ body {
 }
 
 #complaint-submit {
-  margin-bottom: 4px;
+  margin-bottom: 0px;
   border:0 none;
 }
 
-#complaint-text:focus, #complaint-title:focus, #complaint-submit:focus { 
+#complaint-form-text:focus, #complaint-form-title:focus, #complaint-submit:focus { 
   outline:none; 
 }
 
 .sticky-top {
   display: inline-block;
+  margin-bottom: 0px;
+}
+
+.sticky-bottom {
+  position:absolute; 
+  bottom:0;
 }
 
 #sticky ul{
@@ -60,9 +62,7 @@ body {
   margin-bottom: 3em;
 }
 
-#sticky ul li a{
-  text-decoration:none;
-  color:#000;
+#sticky ul li .sticky-note{
   background:#FFC;
   display:block;
   height:17em;
@@ -92,21 +92,26 @@ body {
   font-family:"Coming Soon",arial,sans-serif;
 }
 
-#sticky ul li:nth-child(even) a{
+.complaint-text {
+  overflow: auto;
+  height: 9em;
+}
+
+#sticky ul li:nth-child(even) .sticky-note{
   -o-transform:rotate(4deg);
   -webkit-transform:rotate(4deg);
   -moz-transform:rotate(4deg);
   position:relative;
   top:5px;
 }
-#sticky ul li:nth-child(3n) a{
+#sticky ul li:nth-child(3n) .sticky-note{
   -o-transform:rotate(-3deg);
   -webkit-transform:rotate(-3deg);
   -moz-transform:rotate(-3deg);
   position:relative;
   top:-5px;
 }
-#sticky ul li:nth-child(5n) a{
+#sticky ul li:nth-child(5n) .sticky-note{
   -o-transform:rotate(5deg);
   -webkit-transform:rotate(5deg);
   -moz-transform:rotate(5deg);
@@ -114,7 +119,7 @@ body {
   top:-10px;
 }
 
-#sticky ul li a:hover,#sticky ul li a:focus{
+#sticky ul li .sticky-note:hover,#sticky ul li .sticky-note:focus{
   -moz-box-shadow:10px 10px 7px rgba(0,0,0,.3);
   -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,.1);
   box-shadow:10px 10px 7px rgba(0,0,0,.1);
@@ -124,6 +129,12 @@ body {
   position:relative;
   z-index:3;
 }
+
+.sticky-note a {
+  text-decoration: none;
+  color: #000;
+}
+
 
 .form-signin {
   max-width: 330px;

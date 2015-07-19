@@ -5,6 +5,7 @@ from sqlalchemy import exc
 from app import app, db, lm, bcrypt
 from .forms import *
 from .models import *
+from datetime import datetime
 
 @lm.user_loader
 def load_user(id):
@@ -18,7 +19,7 @@ def before_request():
 def index():
 	form = ComplaintForm()
 	if form.validate_on_submit():
-		complaint = Complaint(title=form.title.data, text=form.text.data, complainant=current_user)
+		complaint = Complaint(title=form.title.data, text=form.text.data, timestamp=datetime.now(), user_rel=current_user)
 		db.session.add(complaint)
 		db.session.commit()
 		return redirect(url_for('index'))
@@ -32,7 +33,7 @@ def index():
 @app.route('/profile')
 @login_required
 def profile():
-	complaints = current_user.complaints.order_by('id desc').limit(20).all()
+	complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
 	return render_template('index.html',
                            title=current_user.name,
                            header=current_user.name + ": ",

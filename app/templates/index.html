@@ -28,27 +28,38 @@
 		<ul>
 			{% if current_user.is_authenticated() and title=="Home" %}
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<form action="" method="post" name="complain">
-					{{ form.hidden_tag() }}
-					<a class="not-active">
-						{{ form.title(id="complaint-title", placeholder="What is so sad?", autocomplete="off", required=True) }}
-						{{ form.text(id="complaint-text", placeholder="Write your complaint here", required=True) }}
+				<span class="sticky-note">
+					<form action="" method="post" name="complain">
+						{{ form.hidden_tag() }}
+						{{ form.title(id="complaint-form-title", placeholder="What is so sad?", autocomplete="off", required=True) }}
+						{{ form.text(id="complaint-form-text", placeholder="Write your complaint here", required=True) }}
 						<input id="complaint-submit" class="btn-success" type="submit" value="Complain">
-					</a>
-				</form>
+					</form>
+				</span>
 			</li>
 			{% endif %}
 			{% for complaint in complaints %}
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<a href="#">
-					<p class="sticky-top pull-left"><sup>{{ complaint.complainant.name }}</sup></p>
+				<span class="sticky-note">
+					<p class="sticky-top pull-left"><sup></sup></p>
 					<p class="sticky-top pull-right"><sup>{{ complaint.timestamp.strftime('%d %b %Y') }}</sup></p>
 					<div class="clearfix"></div>
 					<h2>{{ complaint.title }}</h2>
-					<p>{{ complaint.text }}</p>
-				</a>
+					<p class="complaint-text">{{ complaint.text }}</p>
+				</span>
 			</li>
 			{% endfor %}
+			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				<span class="sticky-note">
+					<a href="#"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> 2345</sup></p></a>
+					<p class="sticky-top pull-right"><sup>19 Jul 2015</sup></p>
+					<div class="clearfix"></div>
+					<h2>Some Title</h2>
+					<p class="complaint-text">Some textsdsd Some textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsd</p>
+					<a href="#"><p class="sticky-bottom"><span class="glyphicon glyphicon-hourglass text-primary" aria-hidden="true"></span></p></a>
+					<a href="#"><p class="sticky-bottom"><span class="glyphicon glyphicon-check text-success" aria-hidden="true"></span></p></a>
+				</span>
+			</li>
 		</ul>
 	</div>
 {% endblock %}

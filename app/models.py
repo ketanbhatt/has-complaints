@@ -2,15 +2,16 @@ from app import app, db, bcrypt
 from sqlalchemy.ext.hybrid import hybrid_property
 
 import flask.ext.whooshalchemy as whooshalchemy
-from datetime import datetime
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(64), index=True)
 	email = db.Column(db.String(120), index=True, unique=True)
 	empId = db.Column(db.String(10), index=True, unique=True)
+	is_admin = db.Column(db.Boolean, default=False)
+	admin_score = db.Column(db.Float, default=0)
 	_password = db.Column(db.String(128))
-	complaints = db.relationship('Complaint', backref="complainant", lazy="dynamic")
+
 
 	@hybrid_property
 	def password(self):
@@ -47,8 +48,16 @@ class Complaint(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	title = db.Column(db.String(64))
 	text = db.Column(db.String(400))
-	timestamp = db.Column(db.DateTime, default=datetime.now())
+	timestamp = db.Column(db.DateTime)
+	upvotes = db.Column(db.Integer, default=0)
+	is_underProcess = db.Column(db.Boolean, default=False)
+	is_resolved = db.Column(db.Boolean, default=False)
+
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	admin_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)
+
+	user_rel = db.relationship("User", foreign_keys=[user_id])
+	admin_rel = db.relationship("User", foreign_keys=[admin_id])
 
 	def __repr__(self):
 		return "<Complaint %r>" % (self.title)
