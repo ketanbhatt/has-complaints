@@ -15,45 +15,11 @@ def load_user(id):
 def before_request():
 	g.search_form = SearchForm()
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-	form = ComplaintForm()
-	if form.validate_on_submit():
-		complaint = Complaint(title=form.title.data, text=form.text.data, timestamp=datetime.now(), user_rel=current_user)
-		db.session.add(complaint)
-		db.session.commit()
-		return redirect(url_for('index'))
 
-	complaints = Complaint.query.order_by('id desc').limit(20).all()
-	return render_template('index.html',
-                           title='Home',
-                           complaints=complaints,
-                           form=form)
 
-@app.route('/profile')
-@login_required
-def profile():
-	complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
-	return render_template('index.html',
-                           title=current_user.name,
-                           header=current_user.name + ": ",
-                           subheader="your complaints",
-                           complaints=complaints)
-
-@app.route('/search', methods=['POST'])
-def search():
-	if not g.search_form.validate_on_submit():
-		return redirect(url_for('index'))
-	return redirect(url_for('search_results', query=g.search_form.search.data))
-
-@app.route('/search_results/<query>')
-def search_results(query):
-    	results = Complaint.query.whoosh_search(query, 20).all()
-    	return render_template('index.html',
-    					title="Search Results",
-    					header="Search Results for ",
-    					subheader=query,
-    					complaints=results)
+# 
+# User Management
+# 
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -99,4 +65,86 @@ def signup():
 @login_required
 def signout():
 	logout_user()
+	return redirect(url_for('index'))
+
+
+
+# 
+# Home and Profile
+# 
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+	form = ComplaintForm()
+	if form.validate_on_submit():
+		complaint = Complaint(title=form.title.data, text=form.text.data, timestamp=datetime.now(), user_rel=current_user)
+		db.session.add(complaint)
+		db.session.commit()
+		return redirect(url_for('index'))
+
+	complaints = Complaint.query.order_by('id desc').limit(20).all()
+	return render_template('index.html',
+                           title='Home',
+                           complaints=complaints,
+                           form=form)
+
+@app.route('/profile')
+@login_required
+def profile():
+	complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
+	return render_template('index.html',
+                           title=current_user.name,
+                           header=current_user.name + ": ",
+                           subheader="your complaints",
+                           complaints=complaints)
+
+
+
+# 
+# Search
+# 
+
+@app.route('/search', methods=['POST'])
+def search():
+	if not g.search_form.validate_on_submit():
+		return redirect(url_for('index'))
+	return redirect(url_for('search_results', query=g.search_form.search.data))
+
+@app.route('/search_results/<query>')
+def search_results(query):
+    	results = Complaint.query.whoosh_search(query, 20).all()
+    	return render_template('index.html',
+    					title="Search Results",
+    					header="Search Results for ",
+    					subheader=query,
+    					complaints=results)
+
+
+
+# 
+# Process Complaints
+# 
+
+@app.route('/underProcess/<int:complaint_id>')
+@login_required
+def set_underProcess(complaint_id):
+	complaint = Complaint.query.filter_by(id = complaint_id).first()
+	complaint.is_underProcess = True
+	db.session.commit()
+	return redirect(url_for('index'))
+
+@app.route('/resolved/<int:complaint_id>')
+@login_required
+def set_resolved(complaint_id):
+	complaint = Complaint.query.filter_by(id = complaint_id).first()
+	complaint.is_resolved = True
+	db.session.commit()
+	return redirect(url_for('index'))
+
+@app.route('/upvote/<int:complaint_id>')
+@login_required
+def upvote(complaint_id):
+	complaint = Complaint.query.filter_by(id = complaint_id).first()
+	complaint.upvotes += 1
+	db.session.commit()
 	return redirect(url_for('index'))
