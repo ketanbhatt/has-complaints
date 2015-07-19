@@ -30,6 +30,9 @@ class User(db.Model):
 	def is_authenticated(self):
 		return True
 
+	def is_admin(self):
+		return self.is_admin
+
 	def is_active(self):
 		return True
 
@@ -59,6 +62,9 @@ class Complaint(db.Model):
 	user_rel = db.relationship("User", foreign_keys=[user_id])
 	admin_rel = db.relationship("User", foreign_keys=[admin_id])
 
+	def get_user(self):
+		return unicode(self.user_id)
+		
 	def __repr__(self):
 		return "<Complaint %r>" % (self.title)
 

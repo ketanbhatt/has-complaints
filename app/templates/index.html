@@ -41,26 +41,48 @@
 			{% for complaint in complaints %}
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<span class="sticky-note">
-					<p class="sticky-top pull-left"><sup></sup></p>
+					{% if current_user.is_admin() or complaint.get_user() == current_user.get_id() %}
+						<p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p>						
+					{% else %}
+						<a href="#"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p></a>
+					{% endif %}
 					<p class="sticky-top pull-right"><sup>{{ complaint.timestamp.strftime('%d %b %Y') }}</sup></p>
 					<div class="clearfix"></div>
 					<h2>{{ complaint.title }}</h2>
 					<p class="complaint-text">{{ complaint.text }}</p>
+					
+					{% if complaint.get_user() == current_user.get_id() %}
+						{% if complaint.is_resolved %}
+							<p class="sticky-bottom" style="left:1em;"><span class="glyphicon glyphicon-check text-success" aria-hidden="true"></span></p>
+						{% else %}
+							<a href="#"><p class="sticky-bottom" style="left:1em;"><span class="glyphicon glyphicon-check" aria-hidden="true" style="color:grey"></span></p></a>
+							{% if complaint.is_underProcess %}
+								<p class="sticky-bottom" style="right:1em;"><span class="glyphicon glyphicon-hourglass text-primary" aria-hidden="true"></span></p>
+							{% endif %}
+						{% endif %}
+
+					{% elif current_user.is_admin() %}
+						{% if complaint.is_resolved %}
+							<p class="sticky-bottom" style="left:1em;"><span class="glyphicon glyphicon-check text-success" aria-hidden="true"></span></p>
+						{% else %}
+							{% if complaint.is_underProcess %}
+								<p class="sticky-bottom" style="right:1em;"><span class="glyphicon glyphicon-hourglass text-primary" aria-hidden="true"></span></p>
+							{% else %}
+								<a href="#"><p class="sticky-bottom" style="right:1em;"><span class="glyphicon glyphicon-hourglass" aria-hidden="true" style="color:grey"></span></p></a>
+							{% endif %}
+						{% endif %}
+
+					{% else %}
+						{% if complaint.is_resolved %}
+							<p class="sticky-bottom" style="left:1em;"><span class="glyphicon glyphicon-check text-success" aria-hidden="true"></span></p>
+						{% elif complaint.is_underProcess %}
+							<p class="sticky-bottom" style="right:1em;"><span class="glyphicon glyphicon-hourglass text-primary" aria-hidden="true"></span></p>
+						{% endif %}
+
+					{% endif %}
 				</span>
 			</li>
 			{% endfor %}
-			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<span class="sticky-note">
-					<a href="#"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> 2345</sup></p></a>
-					<p class="sticky-top pull-right"><sup>19 Jul 2015</sup></p>
-					<div class="clearfix"></div>
-					<h2>Some Title</h2>
-					<p class="complaint-text">Some textsdsd Some textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsdSome textsdsd</p>
-					<a href="#"><p class="sticky-bottom"><span class="glyphicon glyphicon-hourglass text-primary" aria-hidden="true"></span></p></a>
-					<a href="#"><p class="sticky-bottom"><span class="glyphicon glyphicon-check text-success" aria-hidden="true"></span></p></a>
-				</span>
-			</li>
-		</ul>
 	</div>
 {% endblock %}
 
