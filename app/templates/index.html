@@ -42,9 +42,9 @@
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<span class="sticky-note">
 					{% if current_user.is_admin or complaint.get_user() == current_user.get_id() or not current_user.is_authenticated() %}
-						<p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p>						
+						<p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }} - {{ complaint.hotness }}</sup></p>						
 					{% else %}
-						<a href="{{url_for('upvote', complaint_id=complaint.id)}}"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p></a>
+						<a href="{{url_for('upvote', complaint_id=complaint.id)}}"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }} - {{ complaint.hotness }}</sup></p></a>
 					{% endif %}
 					<p class="sticky-top pull-right"><sup>{{ complaint.timestamp.strftime('%d %b %Y') }}</sup></p>
 					<div class="clearfix"></div>

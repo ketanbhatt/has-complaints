@@ -2,7 +2,7 @@ from flask import render_template, redirect, flash, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from sqlalchemy import exc
 
-from app import app, db, lm, bcrypt
+from app import app, db, lm, bcrypt, calc_hotness
 from .forms import *
 from .models import *
 from datetime import datetime
@@ -82,7 +82,7 @@ def index():
 		db.session.commit()
 		return redirect(url_for('index'))
 
-	complaints = Complaint.query.order_by('id desc').limit(20).all()
+	complaints = Complaint.query.order_by('hotness desc').limit(20).all()
 	return render_template('index.html',
                            title='Home',
                            complaints=complaints,
@@ -93,7 +93,7 @@ def index():
 def profile():
 	if current_user.is_admin:
 		complaints = Complaint.query.filter_by(admin_id = current_user.get_id()).order_by('id desc').limit(20).all()
-		subheader = "complaints you are responsible for"
+		subheader = "Points - " + str(current_user.admin_points)
 	else:
 		complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
 		subheader = "your complaints"
@@ -145,6 +145,9 @@ def set_underProcess(complaint_id):
 def set_resolved(complaint_id):
 	complaint = Complaint.query.filter_by(id = complaint_id).first()
 	complaint.is_resolved = True
+	admin = complaint.admin_rel
+	if admin:
+		admin.admin_points += complaint.hotness
 	db.session.commit()
 	return redirect(url_for('index'))
 
@@ -155,9 +158,10 @@ def upvote(complaint_id):
 	if has_upvoted is None:
 		complaint = Complaint.query.filter_by(id = complaint_id).first()
 		complaint.upvotes += 1
+		complaint.hotness = calc_hotness(complaint.timestamp, complaint.upvotes)
 		newUpvote = UpvotesTable(upvoter_id=current_user.get_id(), complaint_id=complaint_id)
 		db.session.add(newUpvote)
 		db.session.commit()
-		
+
 	return redirect(url_for('index'))
 	

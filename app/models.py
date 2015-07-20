@@ -1,6 +1,7 @@
-from app import app, db, bcrypt
+from app import app, db, bcrypt, calc_hotness
 from sqlalchemy.ext.hybrid import hybrid_property
 
+from apscheduler.schedulers.background import BackgroundScheduler
 import flask.ext.whooshalchemy as whooshalchemy
 
 class User(db.Model):
@@ -9,7 +10,7 @@ class User(db.Model):
 	email = db.Column(db.String(120), index=True, unique=True)
 	empId = db.Column(db.String(10), index=True, unique=True)
 	is_admin = db.Column(db.Boolean, default=False)
-	admin_score = db.Column(db.Float, default=0)
+	admin_points = db.Column(db.Float, default=0)
 	_password = db.Column(db.String(128))
 
 
@@ -53,6 +54,7 @@ class Complaint(db.Model):
 	text = db.Column(db.String(400))
 	timestamp = db.Column(db.DateTime)
 	upvotes = db.Column(db.Integer, default=0)
+	hotness = db.Column(db.Integer, default=0)
 	is_underProcess = db.Column(db.Boolean, default=False)
 	is_resolved = db.Column(db.Boolean, default=False)
 
@@ -73,4 +75,17 @@ class UpvotesTable(db.Model):
 	upvoter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	complaint_id = db.Column(db.Integer, db.ForeignKey('complaint.id'))
 
+
+
 whooshalchemy.whoosh_index(app, Complaint)
+
+
+def update_hotness():
+	complaints = Complaint.query.all()
+	for comp in complaints:
+		comp.hotness = calc_hotness(comp.timestamp, comp.upvotes)
+	db.session.commit()
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(update_hotness, 'interval', hours=1)
+scheduler.start()
