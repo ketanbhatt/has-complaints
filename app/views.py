@@ -91,11 +91,17 @@ def index():
 @app.route('/profile')
 @login_required
 def profile():
-	complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
+	if current_user.is_admin:
+		complaints = Complaint.query.filter_by(admin_id = current_user.get_id()).order_by('id desc').limit(20).all()
+		subheader = "complaints you are responsible for"
+	else:
+		complaints = Complaint.query.filter_by(user_id = current_user.get_id()).order_by('id desc').limit(20).all()
+		subheader = "your complaints"
+
 	return render_template('index.html',
                            title=current_user.name,
                            header=current_user.name + ": ",
-                           subheader="your complaints",
+                           subheader=subheader,
                            complaints=complaints)
 
 
@@ -130,6 +136,7 @@ def search_results(query):
 def set_underProcess(complaint_id):
 	complaint = Complaint.query.filter_by(id = complaint_id).first()
 	complaint.is_underProcess = True
+	complaint.admin_rel = current_user
 	db.session.commit()
 	return redirect(url_for('index'))
 
@@ -148,3 +155,4 @@ def upvote(complaint_id):
 	complaint.upvotes += 1
 	db.session.commit()
 	return redirect(url_for('index'))
+	

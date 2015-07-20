@@ -30,7 +30,7 @@ class User(db.Model):
 	def is_authenticated(self):
 		return True
 
-	def is_admin(self):
+	def check_admin(self):
 		return self.is_admin
 
 	def is_active(self):
@@ -64,7 +64,7 @@ class Complaint(db.Model):
 
 	def get_user(self):
 		return unicode(self.user_id)
-		
+
 	def __repr__(self):
 		return "<Complaint %r>" % (self.title)
 

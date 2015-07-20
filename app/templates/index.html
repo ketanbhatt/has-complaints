@@ -11,7 +11,7 @@
 				{% elif current_user.is_authenticated() and title == "Home" %}
 					Looks like nobody has complains...perfect world? Add your own!
 				{% else %}
-					You, my happy sir, have not made any complaints!
+					No complaints found that have anything to do with you...not even remotely!
 				{% endif %}
 			{% endif %}
 			</div>
@@ -26,7 +26,7 @@
 	</div>
 	<div class="container" id="sticky">
 		<ul>
-			{% if current_user.is_authenticated() and title=="Home" %}
+			{% if current_user.is_authenticated() and title=="Home" and not current_user.is_admin %}
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<span class="sticky-note">
 					<form action="" method="post" name="complain">
@@ -41,7 +41,7 @@
 			{% for complaint in complaints %}
 			<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<span class="sticky-note">
-					{% if current_user.is_admin or complaint.get_user() == current_user.get_id() %}
+					{% if current_user.is_admin or complaint.get_user() == current_user.get_id() or not current_user.is_authenticated() %}
 						<p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p>						
 					{% else %}
 						<a href="{{url_for('upvote', complaint_id=complaint.id)}}"><p class="sticky-top pull-left"><sup><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span> {{ complaint.upvotes }}</sup></p></a>
