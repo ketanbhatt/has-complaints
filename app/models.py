@@ -68,4 +68,9 @@ class Complaint(db.Model):
 	def __repr__(self):
 		return "<Complaint %r>" % (self.title)
 
+class UpvotesTable(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	upvoter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	complaint_id = db.Column(db.Integer, db.ForeignKey('complaint.id'))
+
 whooshalchemy.whoosh_index(app, Complaint)

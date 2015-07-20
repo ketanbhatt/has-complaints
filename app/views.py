@@ -151,8 +151,13 @@ def set_resolved(complaint_id):
 @app.route('/upvote/<int:complaint_id>')
 @login_required
 def upvote(complaint_id):
-	complaint = Complaint.query.filter_by(id = complaint_id).first()
-	complaint.upvotes += 1
-	db.session.commit()
+	has_upvoted = UpvotesTable.query.filter_by(upvoter_id = current_user.get_id(), complaint_id = complaint_id).first()
+	if has_upvoted is None:
+		complaint = Complaint.query.filter_by(id = complaint_id).first()
+		complaint.upvotes += 1
+		newUpvote = UpvotesTable(upvoter_id=current_user.get_id(), complaint_id=complaint_id)
+		db.session.add(newUpvote)
+		db.session.commit()
+		
 	return redirect(url_for('index'))
 	
