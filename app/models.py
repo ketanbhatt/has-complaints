@@ -10,7 +10,7 @@ class User(db.Model):
 	email = db.Column(db.String(120), index=True, unique=True)
 	empId = db.Column(db.String(10), index=True, unique=True)
 	is_admin = db.Column(db.Boolean, default=False)
-	admin_points = db.Column(db.Float, default=0)
+	admin_points = db.Column(db.Integer, default=0)
 	_password = db.Column(db.String(128))
 
 
@@ -48,6 +48,7 @@ class User(db.Model):
 
 class Complaint(db.Model):
 	__searchable__ = ['text']
+	__searchable__ = ['title']
 
 	id = db.Column(db.Integer, primary_key = True)
 	title = db.Column(db.String(64))
