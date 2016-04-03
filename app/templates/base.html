@@ -52,7 +52,7 @@
                   </span>
                 </div>
               </form>
-              {% if current_user.is_authenticated() %}
+              {% if current_user.is_authenticated %}
                 <li><a href="{{url_for('profile')}}">{{ current_user.name }}</a></li>
                 <li><a href="{{url_for('signout')}}">Sign Out</a></li>
               {% else %}

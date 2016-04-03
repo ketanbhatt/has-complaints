@@ -23,7 +23,7 @@ def before_request():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-	if current_user.is_authenticated():
+	if current_user.is_authenticated:
 		return redirect(url_for('index'))
 
 	form = SigninForm()

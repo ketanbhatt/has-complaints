@@ -1,7 +1,6 @@
 body {
   padding-top: 20px;
   padding-bottom: 20px;
-  background: red;
 }
 
 .navbar {
@@ -14,7 +13,7 @@ body {
   width: 100%;
   font-size:140%;
   border-radius:3px;
-  background:blue;
+  background:#FFC;
   overflow:hidden;
   font-smoothing:subpixel-antialiased;
 }
@@ -29,7 +28,7 @@ body {
   width: 100%;
   font-family:"Coming Soon",arial,sans-serif;
   border-radius:3px;
-  background:blue;
+  background:#FFC;
   overflow:hidden;
   font-smoothing:subpixel-antialiased;
 }
@@ -64,7 +63,7 @@ body {
 }
 
 #sticky ul li .sticky-note{
-  background:blue;
+  background:#FFC;
   display:block;
   height:17em;
   padding:1em;
